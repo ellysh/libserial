@@ -10,8 +10,7 @@ cmake_minimum_required(VERSION 2.6)
 project(libserial)
 
 if(UNIX)
-  #FIXME: Remove the unused components
-  find_package( Boost 1.40 COMPONENTS system program_options thread REQUIRED )
+  find_package( Boost 1.40 COMPONENTS system program_options REQUIRED )
   include_directories( ${Boost_INCLUDE_DIR} )
 endif(UNIX)
 
