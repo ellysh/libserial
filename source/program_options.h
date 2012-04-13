@@ -5,7 +5,7 @@
 #include <fstream>
 #include <map>
 
-namespace planar
+namespace serial
 {
 
 class ProgramOptions

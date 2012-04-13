@@ -3,7 +3,7 @@
 
 #include <fstream>
 
-namespace planar
+namespace serial
 {
 
 //#define __DEBUG__

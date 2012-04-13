@@ -6,7 +6,7 @@
 #include <stdarg.h>
 
 using namespace std;
-using namespace planar;
+using namespace serial;
 
 Debug* Debug::instance_ = NULL;
 

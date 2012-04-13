@@ -9,7 +9,7 @@
 #include <boost/lexical_cast.hpp>
 
 using namespace std;
-using namespace planar;
+using namespace serial;
 
 ProgramOptions::ProgramOptions(string filename)
 {

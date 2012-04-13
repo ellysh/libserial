@@ -7,7 +7,7 @@
 
 #include "types_serial.h"
 
-namespace planar
+namespace serial
 {
 
 class SerialConnection

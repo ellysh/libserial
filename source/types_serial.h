@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace planar
+namespace serial
 {
 
 typedef unsigned char Byte;

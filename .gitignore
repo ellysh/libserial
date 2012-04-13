@@ -20,8 +20,8 @@ debian/*~
 debian/buildroot/
 debian/*.debhelper.log
 debian/*.substvars
-debian/libplanar/
-debian/libplanar-dev/
+debian/libserial/
+debian/libserial-dev/
 install_manifest.txt
 *.1
 bin/deb/
