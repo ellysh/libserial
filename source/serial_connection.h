@@ -5,7 +5,7 @@
 #include <boost/asio.hpp>
 #include <boost/function.hpp>
 
-#include "types_planar.h"
+#include "types_serial.h"
 
 namespace planar
 {

@@ -1,20 +1,22 @@
 include_directories(${COMMON_INCLUDE_DIRS})
 link_directories(${COMMON_LIBDIR})
 
-set(planar_core_LIB_SRCS
+set(serial_LIB_SRCS
     debug.cpp
-    protocol.cpp
+    program_options.cpp
     serial_connection.cpp)
 
-add_library(planar_core SHARED ${planar_core_LIB_SRCS})
+add_library(serial SHARED ${serial_LIB_SRCS})
 
 if(UNIX)
-  target_link_libraries(planar_core pthread ${Boost_LIBRARIES})
+  target_link_libraries(serial pthread ${Boost_LIBRARIES})
 endif(UNIX)
 
-install(TARGETS planar_core DESTINATION lib/${PROJECT_NAME})
+install(TARGETS serial DESTINATION lib/${PROJECT_NAME})
 
-# FIXME: This header must be in external directory
 install(FILES
+            debug.h
+            types_serial.h
+            program_options.h
             serial_connection.h
         DESTINATION include/${PROJECT_NAME})
