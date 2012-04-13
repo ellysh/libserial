@@ -8,8 +8,8 @@ add_custom_target(deb-clean
     COMMAND find . -name "*.1" | xargs rm -f
 
     COMMAND -rm -rf ${DEBIAN_DIR}/buildroot
-    COMMAND -rm -rf ${DEBIAN_DIR}/libplanar
-    COMMAND -rm -rf ${DEBIAN_DIR}/libplanar-dev
+    COMMAND -rm -rf ${DEBIAN_DIR}/libserial
+    COMMAND -rm -rf ${DEBIAN_DIR}/libserial-dev
     COMMAND find ${DEBIAN_DIR} -name "*.log" | xargs rm -f
     COMMAND find ${DEBIAN_DIR} -name "*.substvars" | xargs rm -f
 

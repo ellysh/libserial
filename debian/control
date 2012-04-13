@@ -1,16 +1,16 @@
-Source: libplanar
+Source: libserial
 Section: main
 Priority: extra
 Maintainer: Ilya Shpigor <petrsum@gmail.com>
 Build-Depends: debhelper (>= 5)
 Standards-Version: 3.7.2
 
-Package: libplanar
+Package: libserial
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, pkg-config
-Description: The library for working with Planar display EL 160.80.50
+Description: The library for work with the serial port
 
-Package: libplanar-dev
+Package: libserial-dev
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Development files for the library for working with Planar display EL 160.80.50
+Description: Development files for libserial
