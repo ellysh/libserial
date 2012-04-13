@@ -9,6 +9,7 @@ using namespace std;
 using namespace serial;
 
 Debug* Debug::instance_ = NULL;
+string Debug::log_file_ = "./debug.txt";
 
 Debug* Debug::Instance()
 {
@@ -21,7 +22,7 @@ Debug* Debug::Instance()
 Debug::Debug()
 {
 #ifdef __DEBUG__
-    file_.open("./debug.txt", ios::out | ios::app);
+    file_.open(log_file_.c_str(), ios::out | ios::app);
 #endif
 }
 
@@ -30,6 +31,11 @@ Debug::~Debug()
 #ifdef __DEBUG__
     file_.close();
 #endif
+}
+
+void Debug::SetLogFile(string log_file)
+{
+    log_file_ = log_file;
 }
 
 ostream& Debug::Log()
@@ -46,4 +52,16 @@ void Debug::Log(const char* fmt, ...)
 
     Log() << buf << endl;
     va_end( arg_list );
+}
+
+void Debug::LogByteArray(ostream& stream, const ByteArray& byte_array)
+{
+    int size = byte_array.size();
+
+    stream << "[ ";
+
+    for ( int i = 0; i < size; i++ )
+        stream << byte_array[i] << " ";
+
+    stream << "]" << endl;
 }
