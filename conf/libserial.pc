@@ -1,0 +1,13 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib/libserial
+includedir=${prefix}/include/libserial
+modules=1
+
+Name: libserial
+Version: 1.0
+Description: The library for work with the serial port
+Requires:
+Libs: -L${libdir}
+Libs.private:
+Cflags: -I${includedir}
