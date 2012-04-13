@@ -1,0 +1,5 @@
+libserial (1.0) stable; urgency=low
+
+  * First package version
+
+ -- Ilya Shpigor <petrsum@gmail.com>  Fri, 13 Apr 2012 10:08:18 +0300
