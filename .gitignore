@@ -1,0 +1,30 @@
+# SVN files
+*.svn-base
+.svn
+
+# kscope files
+*.*~
+LICENSE~
+
+# CMake temporary files
+*.cmake
+CMakeFiles
+CMakeCache.txt
+Makefile
+
+# Binaries
+*.so
+
+# debian build files
+debian/*~
+debian/buildroot/
+debian/*.debhelper.log
+debian/*.substvars
+debian/libplanar/
+debian/libplanar-dev/
+install_manifest.txt
+*.1
+bin/deb/
+build-stamp
+configure-stamp
+debian/files
