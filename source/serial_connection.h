@@ -19,6 +19,7 @@ public:
 
     void SendRequest(ByteArray request);
     ByteArray ReceiveAnswer(size_t size);
+    bool IsConnected();
 
 private:
     boost::asio::io_service io_service_;

@@ -109,3 +109,8 @@ ByteArray SerialConnection::ReceiveAnswer(size_t size)
 
     return answer;
 }
+
+bool SerialConnection::IsConnected()
+{
+    return is_connected_;
+}
