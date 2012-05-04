@@ -4,7 +4,8 @@ link_directories(${COMMON_LIBDIR})
 set(serial_LIB_SRCS
     debug.cpp
     program_options.cpp
-    serial_connection.cpp)
+    serial_connection.cpp
+    serial_server.cpp)
 
 add_library(serial SHARED ${serial_LIB_SRCS})
 
@@ -19,5 +20,6 @@ install(FILES
             types_serial.h
             program_options.h
             serial_connection.h
+            serial_server.h
             singleton.h
         DESTINATION include/${PROJECT_NAME})
