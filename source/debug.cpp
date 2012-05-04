@@ -61,7 +61,7 @@ void Debug::LogByteArray(ostream& stream, const ByteArray& byte_array)
     stream << "[ ";
 
     for ( int i = 0; i < size; i++ )
-        stream << byte_array[i] << " ";
+        stream << hex << (int)byte_array[i] << " ";
 
     stream << "]" << endl;
 }

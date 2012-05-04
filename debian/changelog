@@ -1,3 +1,9 @@
+libserial (1.1) maverick; urgency=low
+
+  * Add the SerialServel class with the async exchange implementation
+
+ -- Ilya Shpigor <petrsum@gmail.com>  Fri, 04 May 2012 11:36:21 +0400
+
 libserial (1.0) stable; urgency=low
 
   * First package version
