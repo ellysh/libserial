@@ -46,16 +46,6 @@ void SerialConnection::Connect()
     }
 }
 
-static void PrintByteArray(const ByteArray& array)
-{
-    ByteArray::const_iterator i;
-    for ( i = array.begin(); i != array.end(); i++ )
-    {
-        GET_DEBUG();
-        debug->Log("0x%x", (*i));
-    }
-}
-
 void SerialConnection::SendRequest(ByteArray request)
 {
     Connect();
@@ -65,7 +55,7 @@ void SerialConnection::SendRequest(ByteArray request)
 
     GET_DEBUG();
     debug->Log() << "SerialConnection::SendRequest()" << endl;
-    //PrintByteArray(request);
+    debug->LogByteArray(debug->Log(), request);
 
     try
     {
@@ -104,8 +94,8 @@ ByteArray SerialConnection::ReceiveAnswer(size_t size)
     }
 
     GET_DEBUG();
-    debug->Log() << "SerialConnection::ReceiveAnswer()" << endl;
-    PrintByteArray(answer);
+    debug->Log() << "SerialConnection::ReceiveAnswer() - ";
+    debug->LogByteArray(debug->Log(), answer);
 
     return answer;
 }
