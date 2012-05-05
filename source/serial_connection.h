@@ -6,11 +6,12 @@
 #include <boost/function.hpp>
 
 #include "types_serial.h"
+#include "debug_client.h"
 
 namespace serial
 {
 
-class SerialConnection
+class SerialConnection : public DebugClient
 {
 public:
     SerialConnection(std::string device, int baud_rate) :

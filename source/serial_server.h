@@ -6,11 +6,12 @@
 #include <boost/function.hpp>
 
 #include "types_serial.h"
+#include "debug_client.h"
 
 namespace serial
 {
 
-class SerialServer
+class SerialServer : public DebugClient
 {
 public:
     typedef boost::function<void (const ByteArray&)> IncomingMessageHandler;
@@ -20,10 +21,7 @@ public:
                  port_(io_service), timer_(io_service),
                  timeout_(io_service) {}
 
-    ~SerialServer();
-
-    /* FIXME: Move this method to base class */
-    void SetLogFile(std::string log_file);
+    virtual ~SerialServer();
 
     void SetDelayTime(int delay_time);
     void SetCycle(int cycle);

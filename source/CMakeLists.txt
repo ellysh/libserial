@@ -3,6 +3,7 @@ link_directories(${COMMON_LIBDIR})
 
 set(serial_LIB_SRCS
     debug.cpp
+    debug_client.cpp
     program_options.cpp
     serial_connection.cpp
     serial_server.cpp)
@@ -17,6 +18,7 @@ install(TARGETS serial DESTINATION lib/${PROJECT_NAME})
 
 install(FILES
             debug.h
+            debug_client.h
             types_serial.h
             program_options.h
             serial_connection.h
