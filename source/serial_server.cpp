@@ -204,3 +204,8 @@ void SerialServer::SetIncomingMessageHandler(IncomingMessageHandler incoming_mes
 {
     incoming_message_handler_ = incoming_message_handler;
 }
+
+void SerialServer::SetLogFile(string log_file)
+{
+    Debug::SetLogFile(log_file);
+}

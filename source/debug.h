@@ -8,8 +8,6 @@
 namespace serial
 {
 
-//#define __DEBUG__
-
 #define GET_DEBUG() \
     Debug* debug = Debug::Instance(); \
 

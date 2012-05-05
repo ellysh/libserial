@@ -22,6 +22,9 @@ public:
 
     ~SerialServer();
 
+    /* FIXME: Move this method to base class */
+    void SetLogFile(std::string log_file);
+
     void SetDelayTime(int delay_time);
     void SetCycle(int cycle);
     void StartServerAndReceive(std::string device, int baud_rate);
