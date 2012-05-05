@@ -6,12 +6,16 @@
 namespace serial
 {
 
+class Debug;
+
 class DebugClient
 {
 public:
-    virtual ~DebugClient() {};
+    DebugClient(std::string log_file);
+    virtual ~DebugClient();
 
-    void SetLogFile(std::string log_file);
+protected:
+    Debug* debug_;
 };
 
 }

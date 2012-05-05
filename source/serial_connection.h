@@ -14,8 +14,8 @@ namespace serial
 class SerialConnection : public DebugClient
 {
 public:
-    SerialConnection(std::string device, int baud_rate) :
-        port_(io_service_), device_(device),
+    SerialConnection(std::string device, int baud_rate, std::string log_file = "") :
+        DebugClient(log_file), port_(io_service_), device_(device),
         baud_rate_(baud_rate), is_connected_(false) {}
 
     void SendRequest(ByteArray request);

@@ -1,11 +1,19 @@
 #include "debug_client.h"
 
+#include <assert.h>
+
 #include "debug.h"
 
 using namespace std;
 using namespace serial;
 
-void DebugClient::SetLogFile(string log_file)
+DebugClient::DebugClient(string log_file)
 {
-    Debug::SetLogFile(log_file);
+    debug_ = new Debug(log_file);
+    assert(debug_ != NULL);
+}
+
+DebugClient::~DebugClient()
+{
+    delete debug_;
 }

@@ -17,8 +17,8 @@ public:
     typedef boost::function<void (const ByteArray&)> IncomingMessageHandler;
 
 public:
-    SerialServer(boost::asio::io_service& io_service) :
-                 port_(io_service), timer_(io_service),
+    SerialServer(boost::asio::io_service& io_service, std::string log_file = "") :
+                 DebugClient(log_file), port_(io_service), timer_(io_service),
                  timeout_(io_service) {}
 
     virtual ~SerialServer();

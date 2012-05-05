@@ -46,14 +46,12 @@ void SerialServer::StartServerAndReceive(string device, int baud_rate)
 
         port_.set_option(boost::asio::serial_port_base::character_size(8));
 
-        GET_DEBUG();
-        debug->Log() << "serialPort(" << device << "): open error = " << error << endl;
+        debug_->Log() << "serialPort(" << device << "): open error = " << error << endl;
         StartReceive();
     }
     catch( exception & ex )
     {
-        GET_DEBUG();
-        debug->Log() << "serialPort(" << device << "): exception = " << ex.what() << endl;
+        debug_->Log() << "serialPort(" << device << "): exception = " << ex.what() << endl;
     }
 }
 
@@ -86,13 +84,13 @@ static void DecreaseForProcessing(ByteArray& message, size_t size)
 static void CallIncomingMessageHandlerAndLog(
         const char* inprefix,  ByteArray& msgIn,
         const char* outprefix, ByteArray& msgOut,
-        SerialServer::IncomingMessageHandler incoming_message_handler)
+        SerialServer::IncomingMessageHandler incoming_message_handler,
+        Debug& debug)
 {
     if ( inprefix && ! msgIn.empty() )
     {
-        GET_DEBUG();
-        debug->Log() << inprefix << ": ";
-        debug->LogByteArray(debug->Log(), msgIn);
+        debug.Log() << inprefix << ": ";
+        debug.LogByteArray(debug.Log(), msgIn);
     }
 
     msgOut.clear();
@@ -101,23 +99,21 @@ static void CallIncomingMessageHandlerAndLog(
 
     if ( outprefix && ! msgOut.empty() )
     {
-        GET_DEBUG();
-        debug->Log() << outprefix << ": ";
-        debug->LogByteArray(debug->Log(), msgOut);
+        debug.Log() << outprefix << ": ";
+        debug.LogByteArray(debug.Log(), msgOut);
     }
 }
 
 void SerialServer::HandleReceive(const boost::system::error_code& error, size_t bytes_transferred)
 {
-    GET_DEBUG();
-    debug->Log() << "received " << bytes_transferred << ", error=" << error << endl;
+    debug_->Log() << "received " << bytes_transferred << ", error=" << error << endl;
 
     if ( error && error != boost::asio::error::message_size )
         return;
 
     DecreaseForProcessing(message_in_, bytes_transferred);
     CallIncomingMessageHandlerAndLog("\trecv", message_in_, "send", message_out_,
-                                     incoming_message_handler_);
+                                     incoming_message_handler_, *debug_);
 
     if ( ! message_out_.empty() )
     {
@@ -150,10 +146,7 @@ void SerialServer::StartSend(const boost::system::error_code& error)
 void SerialServer::HandleSend(const boost::system::error_code& error)
 {
     if ( error )
-    {
-        GET_DEBUG();
-        debug->Log() << "\thandle_send: " << error.message() << endl;
-    }
+        debug_->Log() << "\thandle_send: " << error.message() << endl;
 
     message_out_.clear();
 }
@@ -179,7 +172,7 @@ void SerialServer::TrySend()
 
     ByteArray message_empty;
     CallIncomingMessageHandlerAndLog(NULL, message_empty, "try_send", message_out_,
-                                     incoming_message_handler_);
+                                     incoming_message_handler_, *debug_);
 
     if ( ! message_out_.empty() )
         StartSend(boost::system::error_code());

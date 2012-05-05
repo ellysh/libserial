@@ -8,15 +8,10 @@
 namespace serial
 {
 
-#define GET_DEBUG() \
-    Debug* debug = Debug::Instance(); \
-
 class Debug
 {
 public:
-    static Debug* Instance();
-    static void SetLogFile(std::string log_file);
-
+    Debug(std::string log_file);
     ~Debug();
 
     std::ostream& Log();
@@ -24,12 +19,8 @@ public:
     void LogByteArray(std::ostream& stream, const ByteArray& byte_array);
 
 private:
-    static Debug* instance_;
-    static std::string log_file_;
-
+    std::string log_file_;
     std::ofstream file_;
-
-    Debug();
 };
 
 }

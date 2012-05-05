@@ -8,19 +8,13 @@
 using namespace std;
 using namespace serial;
 
-Debug* Debug::instance_ = NULL;
-string Debug::log_file_ = "./debug.txt";
+static const std::string kDefaultLogfile="./debug.log";
 
-Debug* Debug::Instance()
+Debug::Debug(string log_file) : log_file_(log_file)
 {
-    if (instance_ == NULL)
-        instance_ = new Debug();
+    if ( log_file_.empty() )
+        log_file_ = kDefaultLogfile;
 
-    return instance_;
-}
-
-Debug::Debug()
-{
 #ifdef __DEBUG__
     file_.open(log_file_.c_str(), ios::out | ios::app);
 #endif
@@ -31,11 +25,6 @@ Debug::~Debug()
 #ifdef __DEBUG__
     file_.close();
 #endif
-}
-
-void Debug::SetLogFile(string log_file)
-{
-    log_file_ = log_file;
 }
 
 ostream& Debug::Log()

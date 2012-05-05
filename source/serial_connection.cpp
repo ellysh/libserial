@@ -40,8 +40,7 @@ void SerialConnection::Connect()
         }
         catch (exception& ex)
         {
-            GET_DEBUG();
-            debug->Log() << "SerialConnection - error = " << ex.what() << endl;
+            debug_->Log() << "SerialConnection - error = " << ex.what() << endl;
         }
     }
 }
@@ -53,9 +52,8 @@ void SerialConnection::SendRequest(ByteArray request)
     if ( ! is_connected_ )
         return;
 
-    GET_DEBUG();
-    debug->Log() << "SerialConnection::SendRequest()" << endl;
-    debug->LogByteArray(debug->Log(), request);
+    debug_->Log() << "SerialConnection::SendRequest()" << endl;
+    debug_->LogByteArray(debug_->Log(), request);
 
     try
     {
@@ -93,9 +91,8 @@ ByteArray SerialConnection::ReceiveAnswer(size_t size)
         return ByteArray();
     }
 
-    GET_DEBUG();
-    debug->Log() << "SerialConnection::ReceiveAnswer() - ";
-    debug->LogByteArray(debug->Log(), answer);
+    debug_->Log() << "SerialConnection::ReceiveAnswer() - ";
+    debug_->LogByteArray(debug_->Log(), answer);
 
     return answer;
 }
