@@ -22,21 +22,21 @@ void SerialSend::StartSend(const boost::system::error_code& error)
                           boost::asio::placeholders::error));
     }
 
-    cycle_timer_.expires_from_now(boost::posix_time::milliseconds(server_.GetCycle()));
+    server_.GetCycleTimer().expires_from_now(boost::posix_time::milliseconds(server_.GetCycle()));
 
     server_.LogData("send:", send_data_);
     server_.GetPort().async_write_some(boost::asio::buffer(send_data_),
                                        boost::bind(&SerialSend::HandleSend, this,
                                        boost::asio::placeholders::error));
 
-    cycle_timer_.async_wait(boost::bind(&SerialServer::HandleTimeout, &server_,
+    server_.GetCycleTimer().async_wait(boost::bind(&SerialServer::HandleTimeout, &server_,
                             boost::asio::placeholders::error, "send"));
 }
 
 void SerialSend::TrySend()
 {
     ByteArray empty_data;
-    server_.HandleReceiveAndSend(empty_data);
+    server_.HandleReceiveAndSend(empty_data, false);
 }
 
 void SerialSend::HandleSend(const boost::system::error_code& error)

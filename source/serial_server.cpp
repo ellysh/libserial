@@ -1,6 +1,5 @@
 #include "serial_server.h"
 
-#include <iostream>
 #include <string>
 #include <boost/bind.hpp>
 
@@ -59,12 +58,14 @@ void SerialServer::HandleTimeout(const boost::system::error_code& error, const c
 
     cycle_timer_.expires_from_now(boost::posix_time::milliseconds(cycle_));
     cycle_timer_.async_wait(boost::bind(&SerialServer::HandleTimeout, this,
-                        boost::asio::placeholders::error, action));
+                            boost::asio::placeholders::error, action));
 }
 
-void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data)
+void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data, bool is_new_send)
 {
-    send_.GetSendData().clear();
+    if ( is_new_send )
+        send_.GetSendData().clear();
+
     if ( receive_handler_ != NULL )
         receive_handler_(receive_data);
 
@@ -101,6 +102,11 @@ void SerialServer::SetReceiveHandler(ReceiveHandler receive_handler)
 int SerialServer::GetCycle()
 {
     return cycle_;
+}
+
+boost::asio::deadline_timer& SerialServer::GetCycleTimer()
+{
+    return cycle_timer_;
 }
 
 boost::asio::serial_port& SerialServer::GetPort()

@@ -14,7 +14,7 @@ class SerialSend
 {
 public:
     SerialSend(boost::asio::io_service& io_service, SerialServer& server) :
-        delay_timer_(io_service), cycle_timer_(io_service), server_(server) {};
+        delay_timer_(io_service), server_(server) {};
 
     void SendData(ByteArray& send_data);
     void StartSend(const boost::system::error_code& error);
@@ -28,7 +28,6 @@ private:
     ByteArray send_data_;
     SerialServer& server_;
     boost::asio::deadline_timer delay_timer_;
-    boost::asio::deadline_timer cycle_timer_;
 
     void HandleSend(const boost::system::error_code& error);
 };

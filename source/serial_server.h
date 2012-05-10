@@ -21,13 +21,12 @@ public:
 public:
     SerialServer(boost::asio::io_service& io_service, std::string log_file = "") :
                  DebugClient(log_file), port_(io_service), cycle_timer_(io_service),
-                 send_(io_service, *this), receive_(io_service, *this) {}
+                 send_(io_service, *this), receive_(*this) {}
 
     virtual ~SerialServer();
 
     void StartServerAndReceive(std::string device, int baud_rate);
     void SendData(ByteArray& send_data);
-    void HandleReceiveAndSend(const ByteArray& receive_data);
 
     void SetDelay(int delay);
     void SetCycle(int cycle);
@@ -42,10 +41,12 @@ private:
     SerialReceive receive_;
 
     int GetCycle();
+    boost::asio::deadline_timer& GetCycleTimer();
     boost::asio::serial_port& GetPort();
     Debug* GetDebug();
     void LogData(std::string operation, const ByteArray& data);
 
+    void HandleReceiveAndSend(const ByteArray& receive_data, bool is_new_send);
     void HandleTimeout(const boost::system::error_code& error, const char* action);
 
     friend class SerialSend;

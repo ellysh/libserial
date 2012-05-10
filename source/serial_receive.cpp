@@ -18,15 +18,15 @@ static void IncreaseForReceiving(ByteArray& message, size_t size)
 
 void SerialReceive::StartReceive()
 {
-    cycle_timer_.expires_from_now(boost::posix_time::milliseconds(server_.GetCycle()));
+    server_.GetCycleTimer().expires_from_now(boost::posix_time::milliseconds(server_.GetCycle()));
 
     IncreaseForReceiving(receive_data_, kReceiveSize);
     server_.GetPort().async_read_some(boost::asio::buffer(receive_data_),
-            boost::bind(&SerialReceive::HandleReceive,
-                        this, boost::asio::placeholders::error,
-                        boost::asio::placeholders::bytes_transferred));
+                                      boost::bind(&SerialReceive::HandleReceive,
+                                      this, boost::asio::placeholders::error,
+                                      boost::asio::placeholders::bytes_transferred));
 
-    cycle_timer_.async_wait(boost::bind(&SerialServer::HandleTimeout,
+    server_.GetCycleTimer().async_wait(boost::bind(&SerialServer::HandleTimeout,
                             &server_, boost::asio::placeholders::error, "receive"));
 }
 
@@ -44,7 +44,7 @@ void SerialReceive::HandleReceive(const boost::system::error_code& error, size_t
 
     DecreaseForProcessing(receive_data_, bytes_transferred);
     server_.LogData("receive:", receive_data_);
-    server_.HandleReceiveAndSend(receive_data_);
+    server_.HandleReceiveAndSend(receive_data_, true);
 
     ReceiveData();
 }
