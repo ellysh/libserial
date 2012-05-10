@@ -51,3 +51,9 @@ void SerialSend::HandleSend(const boost::system::error_code& error)
 
     send_data_.clear();
 }
+
+/* FIXME: Return the const value */
+ByteArray& SerialSend::GetSendData()
+{
+    return send_data_;
+}
