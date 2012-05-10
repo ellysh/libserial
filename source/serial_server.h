@@ -26,7 +26,7 @@ public:
     void SetDelayTime(int delay_time);
     void SetCycle(int cycle);
     void StartServerAndReceive(std::string device, int baud_rate);
-    void SetMessageOut(ByteArray& message_out);
+    void SendData(ByteArray& send_data);
     void SetReceiveHandler(ReceiveHandler receive_handler);
 
 private:
@@ -36,8 +36,8 @@ private:
     boost::asio::deadline_timer timer_;
     boost::asio::deadline_timer timeout_;
     int cycle_;
-    ByteArray message_in_;
-    ByteArray message_out_;
+    ByteArray send_data_;
+    ByteArray receive_data_;
 
     void Stop();
     void StartReceive();

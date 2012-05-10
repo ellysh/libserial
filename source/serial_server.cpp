@@ -65,8 +65,8 @@ void SerialServer::StartReceive()
 {
     timeout_.expires_from_now(boost::posix_time::milliseconds(cycle_));
 
-    IncreaseForReceiving(message_in_, kReceiveSize);
-    port_.async_read_some(boost::asio::buffer(message_in_),
+    IncreaseForReceiving(receive_data_, kReceiveSize);
+    port_.async_read_some(boost::asio::buffer(receive_data_),
             boost::bind(&SerialServer::HandleReceive,
                         this, boost::asio::placeholders::error,
                         boost::asio::placeholders::bytes_transferred));
@@ -112,11 +112,11 @@ void SerialServer::HandleReceive(const boost::system::error_code& error, size_t 
     if ( error && error != boost::asio::error::message_size )
         return;
 
-    DecreaseForProcessing(message_in_, bytes_transferred);
-    CallIncomingMessageHandlerAndLog("\trecv", message_in_, "send", message_out_,
+    DecreaseForProcessing(receive_data_, bytes_transferred);
+    CallIncomingMessageHandlerAndLog("\trecv", receive_data_, "send", send_data_,
                                      receive_handler_, *debug_);
 
-    if ( ! message_out_.empty() )
+    if ( ! send_data_.empty() )
     {
         timer_.expires_from_now(boost::posix_time::milliseconds(delay_time_));
         timer_.async_wait(boost::bind(&SerialServer::StartSend, this,
@@ -125,8 +125,8 @@ void SerialServer::HandleReceive(const boost::system::error_code& error, size_t 
     else
         StartSend(boost::system::error_code());
 
-    IncreaseForReceiving(message_in_, kReceiveSize);
-    port_.async_read_some(boost::asio::buffer(message_in_),
+    IncreaseForReceiving(receive_data_, kReceiveSize);
+    port_.async_read_some(boost::asio::buffer(receive_data_),
             boost::bind(&SerialServer::HandleReceive,
                         this, boost::asio::placeholders::error,
                         boost::asio::placeholders::bytes_transferred));
@@ -136,7 +136,7 @@ void SerialServer::StartSend(const boost::system::error_code& error)
 {
     timeout_.expires_from_now(boost::posix_time::milliseconds(cycle_));
 
-    port_.async_write_some(boost::asio::buffer(message_out_),
+    port_.async_write_some(boost::asio::buffer(send_data_),
                            boost::bind(&SerialServer::HandleSend, this,
                                        boost::asio::placeholders::error));
 
@@ -149,7 +149,7 @@ void SerialServer::HandleSend(const boost::system::error_code& error)
     if ( error )
         debug_->Log() << "\thandle_send: " << error.message() << endl;
 
-    message_out_.clear();
+    send_data_.clear();
 }
 
 void SerialServer::HandleTimeout(const boost::system::error_code& error, const char* action)
@@ -168,14 +168,14 @@ void SerialServer::HandleTimeout(const boost::system::error_code& error, const c
 
 void SerialServer::TrySend()
 {
-    if ( ! message_out_.empty() )
+    if ( ! send_data_.empty() )
         return;
 
-    ByteArray message_empty;
-    CallIncomingMessageHandlerAndLog(NULL, message_empty, "try_send", message_out_,
+    ByteArray empty_data;
+    CallIncomingMessageHandlerAndLog(NULL, empty_data, "try_send", send_data_,
                                      receive_handler_, *debug_);
 
-    if ( ! message_out_.empty() )
+    if ( ! send_data_.empty() )
         StartSend(boost::system::error_code());
 }
 
@@ -189,9 +189,9 @@ void SerialServer::SetCycle(int cycle)
     cycle_ = cycle;
 }
 
-void SerialServer::SetMessageOut(ByteArray& message_out)
+void SerialServer::SendData(ByteArray& send_data)
 {
-    message_out_ = message_out;
+    send_data_ = send_data;
 }
 
 void SerialServer::SetReceiveHandler(ReceiveHandler receive_handler)
