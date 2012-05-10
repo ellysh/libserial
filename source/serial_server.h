@@ -14,7 +14,7 @@ namespace serial
 class SerialServer : public DebugClient
 {
 public:
-    typedef boost::function<void (const ByteArray&)> IncomingMessageHandler;
+    typedef boost::function<void (const ByteArray&)> ReceiveHandler;
 
 public:
     SerialServer(boost::asio::io_service& io_service, std::string log_file = "") :
@@ -27,10 +27,10 @@ public:
     void SetCycle(int cycle);
     void StartServerAndReceive(std::string device, int baud_rate);
     void SetMessageOut(ByteArray& message_out);
-    void SetIncomingMessageHandler(IncomingMessageHandler incoming_message_handler);
+    void SetReceiveHandler(ReceiveHandler receive_handler);
 
 private:
-    IncomingMessageHandler incoming_message_handler_;
+    ReceiveHandler receive_handler_;
     boost::asio::serial_port port_;
     int delay_time_;
     boost::asio::deadline_timer timer_;

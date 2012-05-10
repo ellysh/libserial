@@ -81,10 +81,11 @@ static void DecreaseForProcessing(ByteArray& message, size_t size)
     message.resize(size);
 }
 
+/* FIXME: Move this function to SerialServer class or remove it */
 static void CallIncomingMessageHandlerAndLog(
         const char* inprefix,  ByteArray& msgIn,
         const char* outprefix, ByteArray& msgOut,
-        SerialServer::IncomingMessageHandler incoming_message_handler,
+        SerialServer::ReceiveHandler receive_handler,
         Debug& debug)
 {
     if ( inprefix && ! msgIn.empty() )
@@ -94,8 +95,8 @@ static void CallIncomingMessageHandlerAndLog(
     }
 
     msgOut.clear();
-    if ( incoming_message_handler != NULL )
-        incoming_message_handler(msgIn);
+    if ( receive_handler != NULL )
+        receive_handler(msgIn);
 
     if ( outprefix && ! msgOut.empty() )
     {
@@ -113,7 +114,7 @@ void SerialServer::HandleReceive(const boost::system::error_code& error, size_t 
 
     DecreaseForProcessing(message_in_, bytes_transferred);
     CallIncomingMessageHandlerAndLog("\trecv", message_in_, "send", message_out_,
-                                     incoming_message_handler_, *debug_);
+                                     receive_handler_, *debug_);
 
     if ( ! message_out_.empty() )
     {
@@ -172,7 +173,7 @@ void SerialServer::TrySend()
 
     ByteArray message_empty;
     CallIncomingMessageHandlerAndLog(NULL, message_empty, "try_send", message_out_,
-                                     incoming_message_handler_, *debug_);
+                                     receive_handler_, *debug_);
 
     if ( ! message_out_.empty() )
         StartSend(boost::system::error_code());
@@ -193,7 +194,7 @@ void SerialServer::SetMessageOut(ByteArray& message_out)
     message_out_ = message_out;
 }
 
-void SerialServer::SetIncomingMessageHandler(IncomingMessageHandler incoming_message_handler)
+void SerialServer::SetReceiveHandler(ReceiveHandler receive_handler)
 {
-    incoming_message_handler_ = incoming_message_handler;
+    receive_handler_ = receive_handler;
 }
