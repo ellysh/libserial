@@ -8,6 +8,7 @@
 #include "types_serial.h"
 #include "debug_client.h"
 #include "serial_send.h"
+#include "serial_receive.h"
 
 namespace serial
 {
@@ -19,8 +20,8 @@ public:
 
 public:
     SerialServer(boost::asio::io_service& io_service, std::string log_file = "") :
-                 DebugClient(log_file), port_(io_service), timer_(io_service),
-                 timeout_(io_service), send_(io_service, *this) {}
+                 DebugClient(log_file), port_(io_service), cycle_timer_(io_service),
+                 send_(io_service, *this), receive_(io_service, *this) {}
 
     virtual ~SerialServer();
 
@@ -40,16 +41,13 @@ private:
     ReceiveHandler receive_handler_;
     boost::asio::serial_port port_;
     int delay_time_;
-    boost::asio::deadline_timer timer_;
-    boost::asio::deadline_timer timeout_;
+    boost::asio::deadline_timer cycle_timer_;
     int cycle_;
-    ByteArray receive_data_;
     SerialSend send_;
+    SerialReceive receive_;
 
     void Stop();
-    void StartReceive();
 
-    void HandleReceive(const boost::system::error_code& error, size_t bytes_transferred);
     void HandleTimeout(const boost::system::error_code& error, const char* action);
 
     friend class SerialSend;

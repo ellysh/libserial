@@ -9,8 +9,6 @@
 using namespace std;
 using namespace serial;
 
-static const int kReceiveSize = 8192;
-
 SerialServer::~SerialServer()
 {
     Stop();
@@ -47,7 +45,7 @@ void SerialServer::StartServerAndReceive(string device, int baud_rate)
         port_.set_option(boost::asio::serial_port_base::character_size(8));
 
         debug_->Log() << "serialPort(" << device << "): open error = " << error << endl;
-        StartReceive();
+        receive_.StartReceive();
     }
     catch( exception & ex )
     {
@@ -55,69 +53,17 @@ void SerialServer::StartServerAndReceive(string device, int baud_rate)
     }
 }
 
-static void IncreaseForReceiving(ByteArray& message, size_t size)
-{
-    message.reserve(size);
-    message.resize(size);
-}
-
-void SerialServer::StartReceive()
-{
-    timeout_.expires_from_now(boost::posix_time::milliseconds(cycle_));
-
-    IncreaseForReceiving(receive_data_, kReceiveSize);
-    port_.async_read_some(boost::asio::buffer(receive_data_),
-            boost::bind(&SerialServer::HandleReceive,
-                        this, boost::asio::placeholders::error,
-                        boost::asio::placeholders::bytes_transferred));
-
-    timeout_.async_wait(boost::bind(&SerialServer::HandleTimeout,
-                         this, boost::asio::placeholders::error, "receive"));
-}
-
-static void DecreaseForProcessing(ByteArray& message, size_t size)
-{
-    message.resize(size);
-}
-
-void SerialServer::HandleReceive(const boost::system::error_code& error, size_t bytes_transferred)
-{
-    /* FIXME: Split this method to sub-methods */
-    debug_->Log() << "received " << bytes_transferred << ", error=" << error << endl;
-
-    if ( error && error != boost::asio::error::message_size )
-        return;
-
-    DecreaseForProcessing(receive_data_, bytes_transferred);
-
-    debug_->Log() << "receive:";
-    debug_->LogByteArray(debug_->Log(), receive_data_);
-
-    send_.GetSendData().clear();
-    if ( receive_handler_ != NULL )
-        receive_handler_(receive_data_);
-
-    send_.StartSend(boost::system::error_code());
-
-    /* Receive answer */
-    IncreaseForReceiving(receive_data_, kReceiveSize);
-    port_.async_read_some(boost::asio::buffer(receive_data_),
-            boost::bind(&SerialServer::HandleReceive,
-                        this, boost::asio::placeholders::error,
-                        boost::asio::placeholders::bytes_transferred));
-}
-
 void SerialServer::HandleTimeout(const boost::system::error_code& error, const char* action)
 {
-    if ( timeout_.expires_at() > boost::asio::deadline_timer::traits_type::now() )
+    if ( cycle_timer_.expires_at() > boost::asio::deadline_timer::traits_type::now() )
         return;
 
-    timeout_.expires_at(boost::posix_time::pos_infin);
+    cycle_timer_.expires_at(boost::posix_time::pos_infin);
 
     send_.TrySend();
 
-    timeout_.expires_from_now(boost::posix_time::milliseconds(cycle_));
-    timeout_.async_wait(boost::bind(&SerialServer::HandleTimeout, this,
+    cycle_timer_.expires_from_now(boost::posix_time::milliseconds(cycle_));
+    cycle_timer_.async_wait(boost::bind(&SerialServer::HandleTimeout, this,
                         boost::asio::placeholders::error, action));
 }
 
