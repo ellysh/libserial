@@ -81,41 +81,21 @@ static void DecreaseForProcessing(ByteArray& message, size_t size)
     message.resize(size);
 }
 
-/* FIXME: Move this function to SerialServer class or remove it */
-static void CallIncomingMessageHandlerAndLog(
-        const char* inprefix,  ByteArray& msgIn,
-        const char* outprefix, ByteArray& msgOut,
-        SerialServer::ReceiveHandler receive_handler,
-        Debug& debug)
-{
-    if ( inprefix && ! msgIn.empty() )
-    {
-        debug.Log() << inprefix << ": ";
-        debug.LogByteArray(debug.Log(), msgIn);
-    }
-
-    msgOut.clear();
-    if ( receive_handler != NULL )
-        receive_handler(msgIn);
-
-    if ( outprefix && ! msgOut.empty() )
-    {
-        debug.Log() << outprefix << ": ";
-        debug.LogByteArray(debug.Log(), msgOut);
-    }
-}
-
 void SerialServer::HandleReceive(const boost::system::error_code& error, size_t bytes_transferred)
 {
+    /* FIXME: Split this method to sub-methods */
     debug_->Log() << "received " << bytes_transferred << ", error=" << error << endl;
 
     if ( error && error != boost::asio::error::message_size )
         return;
 
     DecreaseForProcessing(receive_data_, bytes_transferred);
-    CallIncomingMessageHandlerAndLog("\trecv", receive_data_, "send", send_data_,
-                                     receive_handler_, *debug_);
 
+    send_data_.clear();
+    if ( receive_handler_ != NULL )
+        receive_handler_(receive_data_);
+
+    /* Send new data */
     if ( ! send_data_.empty() )
     {
         timer_.expires_from_now(boost::posix_time::milliseconds(delay_time_));
@@ -125,6 +105,7 @@ void SerialServer::HandleReceive(const boost::system::error_code& error, size_t 
     else
         StartSend(boost::system::error_code());
 
+    /* Receive answer */
     IncreaseForReceiving(receive_data_, kReceiveSize);
     port_.async_read_some(boost::asio::buffer(receive_data_),
             boost::bind(&SerialServer::HandleReceive,
@@ -135,6 +116,9 @@ void SerialServer::HandleReceive(const boost::system::error_code& error, size_t 
 void SerialServer::StartSend(const boost::system::error_code& error)
 {
     timeout_.expires_from_now(boost::posix_time::milliseconds(cycle_));
+
+    debug_->Log() << "send" << ": ";
+    debug_->LogByteArray(debug_->Log(), send_data_);
 
     port_.async_write_some(boost::asio::buffer(send_data_),
                            boost::bind(&SerialServer::HandleSend, this,
@@ -171,9 +155,12 @@ void SerialServer::TrySend()
     if ( ! send_data_.empty() )
         return;
 
-    ByteArray empty_data;
-    CallIncomingMessageHandlerAndLog(NULL, empty_data, "try_send", send_data_,
-                                     receive_handler_, *debug_);
+    send_data_.clear();
+    if ( receive_handler_ != NULL )
+    {
+        ByteArray empty_data;
+        receive_handler_(empty_data);
+    }
 
     if ( ! send_data_.empty() )
         StartSend(boost::system::error_code());
