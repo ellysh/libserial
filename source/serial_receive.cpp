@@ -43,10 +43,7 @@ void SerialReceive::HandleReceive(const boost::system::error_code& error, size_t
         return;
 
     DecreaseForProcessing(receive_data_, bytes_transferred);
-
-    server_.debug_->Log() << "receive:";
-    server_.debug_->LogByteArray(server_.debug_->Log(), receive_data_);
-
+    server_.LogData("receive:", receive_data_);
     server_.HandleReceiveAndSend(receive_data_);
 
     ReceiveData();

@@ -33,10 +33,6 @@ public:
     void SetCycle(int cycle);
     void SetReceiveHandler(ReceiveHandler receive_handler);
 
-    int GetCycle();
-    boost::asio::serial_port& GetPort();
-    Debug* GetDebug();
-
 private:
     ReceiveHandler receive_handler_;
     boost::asio::serial_port port_;
@@ -45,7 +41,10 @@ private:
     SerialSend send_;
     SerialReceive receive_;
 
-    void Stop();
+    int GetCycle();
+    boost::asio::serial_port& GetPort();
+    Debug* GetDebug();
+    void LogData(std::string operation, const ByteArray& data);
 
     void HandleTimeout(const boost::system::error_code& error, const char* action);
 

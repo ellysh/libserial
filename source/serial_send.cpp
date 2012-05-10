@@ -24,9 +24,7 @@ void SerialSend::StartSend(const boost::system::error_code& error)
 
     cycle_timer_.expires_from_now(boost::posix_time::milliseconds(server_.GetCycle()));
 
-    server_.debug_->Log() << "send:";
-    server_.debug_->LogByteArray(server_.debug_->Log(), send_data_);
-
+    server_.LogData("send:", send_data_);
     server_.GetPort().async_write_some(boost::asio::buffer(send_data_),
                                        boost::bind(&SerialSend::HandleSend, this,
                                        boost::asio::placeholders::error));

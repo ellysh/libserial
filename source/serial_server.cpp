@@ -11,11 +11,6 @@ using namespace serial;
 
 SerialServer::~SerialServer()
 {
-    Stop();
-}
-
-void SerialServer::Stop()
-{
     if ( port_.is_open() )
     {
         port_.cancel();
@@ -67,6 +62,22 @@ void SerialServer::HandleTimeout(const boost::system::error_code& error, const c
                         boost::asio::placeholders::error, action));
 }
 
+void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data)
+{
+    send_.GetSendData().clear();
+    if ( receive_handler_ != NULL )
+        receive_handler_(receive_data);
+
+    if ( ! send_.GetSendData().empty() )
+        send_.StartSend(boost::system::error_code());
+}
+
+void SerialServer::LogData(std::string operation, const ByteArray& data)
+{
+    debug_->Log() << operation;
+    debug_->LogByteArray(debug_->Log(), data);
+}
+
 void SerialServer::SetDelay(int delay)
 {
     send_.SetDelay(delay);
@@ -100,14 +111,4 @@ boost::asio::serial_port& SerialServer::GetPort()
 Debug* SerialServer::GetDebug()
 {
     return debug_;
-}
-
-void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data)
-{
-    send_.GetSendData().clear();
-    if ( receive_handler_ != NULL )
-        receive_handler_(receive_data);
-
-    if ( ! send_.GetSendData().empty() )
-        send_.StartSend(boost::system::error_code());
 }
