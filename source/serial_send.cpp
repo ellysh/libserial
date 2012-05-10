@@ -41,9 +41,7 @@ void SerialSend::TrySend()
 
 void SerialSend::HandleSend(const boost::system::error_code& error)
 {
-    if ( error )
-        server_.debug_->Log() << "\thandle_send: " << error.message() << endl;
-
+    server_.debug_->Log() << "\tsend error = " << error.message() << endl;
     send_data_.clear();
 }
 
