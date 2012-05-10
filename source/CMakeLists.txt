@@ -6,7 +6,8 @@ set(serial_LIB_SRCS
     debug_client.cpp
     program_options.cpp
     serial_connection.cpp
-    serial_server.cpp)
+    serial_server.cpp
+    serial_send.cpp)
 
 add_library(serial SHARED ${serial_LIB_SRCS})
 

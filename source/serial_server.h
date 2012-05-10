@@ -29,6 +29,12 @@ public:
     void SendData(ByteArray& send_data);
     void SetReceiveHandler(ReceiveHandler receive_handler);
 
+    void CallReceiveHandler(const ByteArray& receive_data);
+    int GetCycle();
+    int GetDelay();
+    boost::asio::serial_port& GetPort();
+    Debug* GetDebug();
+
 private:
     ReceiveHandler receive_handler_;
     boost::asio::serial_port port_;
@@ -48,6 +54,8 @@ private:
     void HandleTimeout(const boost::system::error_code& error, const char* action);
 
     void TrySend();
+
+    friend class SerialSend;
 };
 
 }

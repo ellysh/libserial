@@ -184,3 +184,30 @@ void SerialServer::SetReceiveHandler(ReceiveHandler receive_handler)
 {
     receive_handler_ = receive_handler;
 }
+
+int SerialServer::GetCycle()
+{
+    return cycle_;
+}
+
+int SerialServer::GetDelay()
+{
+    return delay_time_;
+}
+
+boost::asio::serial_port& SerialServer::GetPort()
+{
+    return port_;
+}
+
+Debug* SerialServer::GetDebug()
+{
+    return debug_;
+}
+
+void SerialServer::CallReceiveHandler(const ByteArray& receive_data)
+{
+    send_data_.clear();
+    if ( receive_handler_ != NULL )
+        receive_handler_(receive_data);
+}
