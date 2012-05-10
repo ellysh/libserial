@@ -37,7 +37,6 @@ static void DecreaseForProcessing(ByteArray& message, size_t size)
 
 void SerialReceive::HandleReceive(const boost::system::error_code& error, size_t bytes_transferred)
 {
-    /* FIXME: Split this method to sub-methods */
     server_.debug_->Log() << "received " << bytes_transferred << ", error=" << error << endl;
 
     if ( error && error != boost::asio::error::message_size )
@@ -50,10 +49,15 @@ void SerialReceive::HandleReceive(const boost::system::error_code& error, size_t
 
     server_.HandleReceiveAndSend(receive_data_);
 
-    /* Receive answer */
+    ReceiveData();
+}
+
+void SerialReceive::ReceiveData()
+{
     IncreaseForReceiving(receive_data_, kReceiveSize);
+
     server_.GetPort().async_read_some(boost::asio::buffer(receive_data_),
-            boost::bind(&SerialReceive::HandleReceive,
-                        this, boost::asio::placeholders::error,
-                        boost::asio::placeholders::bytes_transferred));
+                                      boost::bind(&SerialReceive::HandleReceive,
+                                      this, boost::asio::placeholders::error,
+                                      boost::asio::placeholders::bytes_transferred));
 }

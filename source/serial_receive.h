@@ -23,6 +23,7 @@ private:
     SerialServer& server_;
     boost::asio::deadline_timer cycle_timer_;
 
+    void ReceiveData();
     void HandleReceive(const boost::system::error_code& error, size_t bytes_transferred);
 };
 
