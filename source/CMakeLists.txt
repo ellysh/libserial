@@ -6,6 +6,7 @@ set(serial_LIB_SRCS
     debug_client.cpp
     program_options.cpp
     serial_connection.cpp
+    serial_receive.cpp
     serial_server.cpp
     serial_send.cpp)
 
@@ -23,6 +24,7 @@ install(FILES
             types_serial.h
             program_options.h
             serial_connection.h
+            serial_receive.h
             serial_server.h
             serial_send.h
             singleton.h

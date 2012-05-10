@@ -30,7 +30,7 @@ public:
     void SendData(ByteArray& send_data);
     void SetReceiveHandler(ReceiveHandler receive_handler);
 
-    void CallReceiveHandler(const ByteArray& receive_data);
+    void HandleReceiveAndSend(const ByteArray& receive_data);
     int GetCycle();
     int GetDelay();
     boost::asio::serial_port& GetPort();
@@ -53,6 +53,7 @@ private:
     void HandleTimeout(const boost::system::error_code& error, const char* action);
 
     friend class SerialSend;
+    friend class SerialReceive;
 };
 
 }

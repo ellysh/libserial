@@ -38,10 +38,7 @@ void SerialSend::StartSend(const boost::system::error_code& error)
 void SerialSend::TrySend()
 {
     ByteArray empty_data;
-    server_.CallReceiveHandler(empty_data);
-
-    if ( ! send_data_.empty() )
-        StartSend(boost::system::error_code());
+    server_.HandleReceiveAndSend(empty_data);
 }
 
 void SerialSend::HandleSend(const boost::system::error_code& error)

@@ -75,7 +75,6 @@ void SerialServer::StartReceive()
                          this, boost::asio::placeholders::error, "receive"));
 }
 
-
 static void DecreaseForProcessing(ByteArray& message, size_t size)
 {
     message.resize(size);
@@ -162,9 +161,12 @@ Debug* SerialServer::GetDebug()
     return debug_;
 }
 
-void SerialServer::CallReceiveHandler(const ByteArray& receive_data)
+void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data)
 {
     send_.GetSendData().clear();
     if ( receive_handler_ != NULL )
         receive_handler_(receive_data);
+
+    if ( ! send_.GetSendData().empty() )
+        send_.StartSend(boost::system::error_code());
 }
