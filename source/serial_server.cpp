@@ -98,15 +98,7 @@ void SerialServer::HandleReceive(const boost::system::error_code& error, size_t 
     if ( receive_handler_ != NULL )
         receive_handler_(receive_data_);
 
-    /* Send new data */
-    if ( ! send_data_.empty() )
-    {
-        timer_.expires_from_now(boost::posix_time::milliseconds(delay_time_));
-        timer_.async_wait(boost::bind(&SerialServer::StartSend, this,
-                          boost::asio::placeholders::error));
-    }
-    else
-        StartSend(boost::system::error_code());
+    StartSend(boost::system::error_code());
 
     /* Receive answer */
     IncreaseForReceiving(receive_data_, kReceiveSize);
@@ -118,6 +110,13 @@ void SerialServer::HandleReceive(const boost::system::error_code& error, size_t 
 
 void SerialServer::StartSend(const boost::system::error_code& error)
 {
+    if ( ! send_data_.empty() )
+    {
+        timer_.expires_from_now(boost::posix_time::milliseconds(delay_time_));
+        timer_.async_wait(boost::bind(&SerialServer::StartSend, this,
+                          boost::asio::placeholders::error));
+    }
+
     timeout_.expires_from_now(boost::posix_time::milliseconds(cycle_));
 
     debug_->Log() << "send:";
@@ -155,9 +154,6 @@ void SerialServer::HandleTimeout(const boost::system::error_code& error, const c
 
 void SerialServer::TrySend()
 {
-    if ( ! send_data_.empty() )
-        return;
-
     send_data_.clear();
     if ( receive_handler_ != NULL )
     {
