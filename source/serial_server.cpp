@@ -89,7 +89,7 @@ void SerialServer::SetCycle(int cycle)
     cycle_ = cycle;
 }
 
-void SerialServer::SendData(ByteArray& send_data)
+void SerialServer::SendData(const ByteArray& send_data)
 {
     send_.SendData(send_data);
 }

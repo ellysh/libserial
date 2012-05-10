@@ -26,7 +26,7 @@ public:
     virtual ~SerialServer();
 
     void StartServerAndReceive(std::string device, int baud_rate);
-    void SendData(ByteArray& send_data);
+    void SendData(const ByteArray& send_data);
 
     void SetDelay(int delay);
     void SetCycle(int cycle);

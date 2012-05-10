@@ -8,7 +8,7 @@
 using namespace std;
 using namespace serial;
 
-void SerialSend::SendData(ByteArray& send_data)
+void SerialSend::SendData(const ByteArray& send_data)
 {
     send_data_ = send_data;
 }

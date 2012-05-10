@@ -16,7 +16,7 @@ public:
     SerialSend(boost::asio::io_service& io_service, SerialServer& server) :
         delay_timer_(io_service), server_(server) {};
 
-    void SendData(ByteArray& send_data);
+    void SendData(const ByteArray& send_data);
     void StartSend(const boost::system::error_code& error);
     void TrySend();
     void SetDelay(int delay);
