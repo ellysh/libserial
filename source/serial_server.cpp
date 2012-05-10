@@ -91,6 +91,9 @@ void SerialServer::HandleReceive(const boost::system::error_code& error, size_t 
 
     DecreaseForProcessing(receive_data_, bytes_transferred);
 
+    debug_->Log() << "receive:";
+    debug_->LogByteArray(debug_->Log(), receive_data_);
+
     send_data_.clear();
     if ( receive_handler_ != NULL )
         receive_handler_(receive_data_);
@@ -117,7 +120,7 @@ void SerialServer::StartSend(const boost::system::error_code& error)
 {
     timeout_.expires_from_now(boost::posix_time::milliseconds(cycle_));
 
-    debug_->Log() << "send" << ": ";
+    debug_->Log() << "send:";
     debug_->LogByteArray(debug_->Log(), send_data_);
 
     port_.async_write_some(boost::asio::buffer(send_data_),
