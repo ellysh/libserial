@@ -19,10 +19,12 @@ public:
     void SendData(ByteArray& send_data);
     void StartSend(const boost::system::error_code& error);
     void TrySend();
+    void SetDelay(int delay);
 
     ByteArray& GetSendData();
 
 private:
+    int delay_;
     ByteArray send_data_;
     SerialServer& server_;
     boost::asio::deadline_timer delay_timer_;

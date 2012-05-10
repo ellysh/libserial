@@ -67,9 +67,9 @@ void SerialServer::HandleTimeout(const boost::system::error_code& error, const c
                         boost::asio::placeholders::error, action));
 }
 
-void SerialServer::SetDelayTime(int delay_time)
+void SerialServer::SetDelay(int delay)
 {
-    delay_time_ = delay_time;
+    send_.SetDelay(delay);
 }
 
 void SerialServer::SetCycle(int cycle)
@@ -90,11 +90,6 @@ void SerialServer::SetReceiveHandler(ReceiveHandler receive_handler)
 int SerialServer::GetCycle()
 {
     return cycle_;
-}
-
-int SerialServer::GetDelay()
-{
-    return delay_time_;
 }
 
 boost::asio::serial_port& SerialServer::GetPort()

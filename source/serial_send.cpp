@@ -17,7 +17,7 @@ void SerialSend::StartSend(const boost::system::error_code& error)
 {
     if ( ! send_data_.empty() )
     {
-        delay_timer_.expires_from_now(boost::posix_time::milliseconds(server_.GetDelay()));
+        delay_timer_.expires_from_now(boost::posix_time::milliseconds(delay_));
         delay_timer_.async_wait(boost::bind(&SerialSend::StartSend, this,
                           boost::asio::placeholders::error));
     }
@@ -53,4 +53,9 @@ void SerialSend::HandleSend(const boost::system::error_code& error)
 ByteArray& SerialSend::GetSendData()
 {
     return send_data_;
+}
+
+void SerialSend::SetDelay(int delay)
+{
+    delay_ = delay;
 }

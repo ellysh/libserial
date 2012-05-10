@@ -25,22 +25,21 @@ public:
 
     virtual ~SerialServer();
 
-    void SetDelayTime(int delay_time);
-    void SetCycle(int cycle);
     void StartServerAndReceive(std::string device, int baud_rate);
     void SendData(ByteArray& send_data);
+    void HandleReceiveAndSend(const ByteArray& receive_data);
+
+    void SetDelay(int delay);
+    void SetCycle(int cycle);
     void SetReceiveHandler(ReceiveHandler receive_handler);
 
-    void HandleReceiveAndSend(const ByteArray& receive_data);
     int GetCycle();
-    int GetDelay();
     boost::asio::serial_port& GetPort();
     Debug* GetDebug();
 
 private:
     ReceiveHandler receive_handler_;
     boost::asio::serial_port port_;
-    int delay_time_;
     boost::asio::deadline_timer cycle_timer_;
     int cycle_;
     SerialSend send_;
