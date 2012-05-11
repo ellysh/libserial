@@ -10,6 +10,9 @@ cmake_minimum_required(VERSION 2.6)
 project(libserial)
 
 if(UNIX)
+  find_package(PkgConfig)
+  pkg_check_modules(LIBMYSQL_STATE REQUIRED libmysql-state)
+
   find_package( Boost 1.40 COMPONENTS system program_options REQUIRED )
   include_directories( ${Boost_INCLUDE_DIR} )
 endif(UNIX)
@@ -19,10 +22,12 @@ if(UNIX)
 endif(UNIX)
 
 set(COMMON_INCLUDE_DIRS
-    ${PROJECT_SOURCE_DIR}/source)
+    ${PROJECT_SOURCE_DIR}/source
+    ${LIBMYSQL_STATE_INCLUDE_DIRS})
 
 set(COMMON_LIBDIR
-    ${PROJECT_SOURCE_DIR}/source)
+    ${PROJECT_SOURCE_DIR}/source
+    ${LIBMYSQL_STATE_LIBDIR})
 
 # Build type by default is Debug
 if(NOT CMAKE_BUILD_TYPE)
