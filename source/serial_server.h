@@ -13,7 +13,7 @@
 namespace serial
 {
 
-class SerialServer : public DebugClient
+class SerialServer : protected DebugClient
 {
 public:
     typedef boost::function<void (const ByteArray&)> ReceiveHandler;

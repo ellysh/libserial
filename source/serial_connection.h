@@ -11,7 +11,7 @@
 namespace serial
 {
 
-class SerialConnection : public DebugClient
+class SerialConnection : protected DebugClient
 {
 public:
     SerialConnection(std::string device, int baud_rate, std::string log_file = "") :
