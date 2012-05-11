@@ -35,6 +35,7 @@ void SerialSend::StartSend(const boost::system::error_code& error)
 
 void SerialSend::TrySend()
 {
+    server_.debug_->Log() << "try_send" << endl;
     ByteArray empty_data;
     server_.HandleReceiveAndSend(empty_data, false);
 }
