@@ -20,7 +20,7 @@ public:
     typedef boost::function<void (const ByteArray&)> ReceiveHandler;
 
 public:
-    SerialServer(boost::asio::io_service& io_service, std::string name = "", std::string log_file = "") :
+    SerialServer(boost::asio::io_service& io_service, std::string log_file = "", std::string name = "") :
                  DebugClient(log_file), StateClientWrap(name), port_(io_service), cycle_timer_(io_service),
                  send_(io_service, *this), receive_(*this) {};
 
