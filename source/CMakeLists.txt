@@ -9,7 +9,7 @@ set(serial_LIB_SRCS
     serial_receive.cpp
     serial_server.cpp
     serial_send.cpp
-    state_client.cpp)
+    state_client_wrap.cpp)
 
 add_library(serial SHARED ${serial_LIB_SRCS})
 

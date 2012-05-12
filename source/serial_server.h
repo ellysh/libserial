@@ -7,21 +7,22 @@
 
 #include "types_serial.h"
 #include "debug_client.h"
+#include "state_client_wrap.h"
 #include "serial_send.h"
 #include "serial_receive.h"
 
 namespace serial
 {
 
-class SerialServer : protected DebugClient
+class SerialServer : protected DebugClient, protected StateClientWrap
 {
 public:
     typedef boost::function<void (const ByteArray&)> ReceiveHandler;
 
 public:
-    SerialServer(boost::asio::io_service& io_service, std::string log_file = "") :
-                 DebugClient(log_file), port_(io_service), cycle_timer_(io_service),
-                 send_(io_service, *this), receive_(*this) {}
+    SerialServer(boost::asio::io_service& io_service, std::string name = "", std::string log_file = "") :
+                 DebugClient(log_file), StateClientWrap(name), port_(io_service), cycle_timer_(io_service),
+                 send_(io_service, *this), receive_(*this) {};
 
     virtual ~SerialServer();
 
