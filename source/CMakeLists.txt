@@ -14,7 +14,7 @@ set(serial_LIB_SRCS
 add_library(serial SHARED ${serial_LIB_SRCS})
 
 if(UNIX)
-  target_link_libraries(serial pthread ${Boost_LIBRARIES})
+  target_link_libraries(serial pthread mysql_state ${Boost_LIBRARIES})
 endif(UNIX)
 
 install(TARGETS serial DESTINATION lib/${PROJECT_NAME})

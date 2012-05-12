@@ -19,7 +19,7 @@ public:
 
 private:
     std::string name_;
-    mysql_state::StateClient* state_;
+    mysql_state::StateClient* client_;
 };
 
 }
