@@ -25,8 +25,7 @@ install(FILES
             types_serial.h
             program_options.h
             serial_connection.h
-            serial_receive.h
             serial_server.h
-            serial_send.h
+            state_client_wrap.h
             singleton.h
         DESTINATION include/${PROJECT_NAME})

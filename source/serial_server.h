@@ -8,11 +8,12 @@
 #include "types_serial.h"
 #include "debug_client.h"
 #include "state_client_wrap.h"
-#include "serial_send.h"
-#include "serial_receive.h"
 
 namespace serial
 {
+
+class SerialSend;
+class SerialReceive;
 
 class SerialServer : protected DebugClient, protected StateClientWrap
 {
@@ -20,9 +21,7 @@ public:
     typedef boost::function<void (const ByteArray&)> ReceiveHandler;
 
 public:
-    SerialServer(boost::asio::io_service& io_service, std::string log_file = "", std::string name = "") :
-                 DebugClient(log_file), StateClientWrap(name), port_(io_service), cycle_timer_(io_service),
-                 send_(io_service, *this), receive_(*this) {};
+    SerialServer(boost::asio::io_service& io_service, std::string log_file = "", std::string name = "");
 
     virtual ~SerialServer();
 
@@ -38,8 +37,8 @@ private:
     boost::asio::serial_port port_;
     boost::asio::deadline_timer cycle_timer_;
     int cycle_;
-    SerialSend send_;
-    SerialReceive receive_;
+    SerialSend* send_;
+    SerialReceive* receive_;
 
     int GetCycle();
     boost::asio::deadline_timer& GetCycleTimer();
