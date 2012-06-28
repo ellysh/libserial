@@ -8,7 +8,7 @@
 using namespace std;
 using namespace serial;
 
-static const std::string kDefaultLogfile="./debug.log";
+static const std::string kDefaultLogfile="/dev/null";
 
 Debug::Debug(string log_file) : log_file_(log_file)
 {
