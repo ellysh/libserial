@@ -52,8 +52,10 @@ void SerialConnection::SendRequest(ByteArray request)
     if ( ! is_connected_ )
         return;
 
+#ifdef __DEBUG__
     debug_->Log() << "SerialConnection::SendRequest()" << endl;
     debug_->LogByteArray(debug_->Log(), request);
+#endif
 
     try
     {
@@ -91,8 +93,10 @@ ByteArray SerialConnection::ReceiveAnswer(size_t size)
         return ByteArray();
     }
 
+#ifdef __DEBUG__
     debug_->Log() << "SerialConnection::ReceiveAnswer() - ";
     debug_->LogByteArray(debug_->Log(), answer);
+#endif
 
     return answer;
 }
