@@ -7,7 +7,6 @@
 
 #include "types_serial.h"
 #include "debug_client.h"
-#include "state_client_wrap.h"
 
 namespace serial
 {
@@ -15,7 +14,7 @@ namespace serial
 class SerialSend;
 class SerialReceive;
 
-class SerialServer : protected DebugClient, protected StateClientWrap
+class SerialServer : protected DebugClient
 {
 public:
     typedef boost::function<void (const ByteArray&)> ReceiveHandler;

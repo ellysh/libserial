@@ -8,8 +8,7 @@ set(serial_LIB_SRCS
     serial_connection.cpp
     serial_receive.cpp
     serial_server.cpp
-    serial_send.cpp
-    state_client_wrap.cpp)
+    serial_send.cpp)
 
 add_library(serial SHARED ${serial_LIB_SRCS})
 
@@ -26,6 +25,5 @@ install(FILES
             program_options.h
             serial_connection.h
             serial_server.h
-            state_client_wrap.h
             singleton.h
         DESTINATION include/${PROJECT_NAME})

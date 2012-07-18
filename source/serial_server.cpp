@@ -13,7 +13,7 @@ using namespace serial;
 using namespace mysql_state;
 
 SerialServer::SerialServer(boost::asio::io_service& io_service, string log_file, string name) :
-                           DebugClient(log_file), StateClientWrap(name), port_(io_service),
+                           DebugClient(log_file), port_(io_service),
                            cycle_timer_(io_service)
 {
     send_ = new SerialSend(io_service, *this);
@@ -58,12 +58,10 @@ void SerialServer::StartServerAndReceive(string device, int baud_rate)
 
         debug_->Log() << "serialPort(" << device << "): open error = " << error << endl;
         receive_->StartReceive();
-        SetState(kNormal);
     }
     catch( exception & ex )
     {
         debug_->Log() << "serialPort(" << device << "): exception = " << ex.what() << endl;
-        SetState(kFailure);
     }
 }
 
@@ -79,8 +77,6 @@ void SerialServer::HandleTimeout(const boost::system::error_code& error, const c
     cycle_timer_.expires_from_now(boost::posix_time::milliseconds(cycle_));
     cycle_timer_.async_wait(boost::bind(&SerialServer::HandleTimeout, this,
                             boost::asio::placeholders::error, action));
-
-    SetState(kFailure);
 }
 
 void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data, bool is_new_send)
@@ -93,8 +89,6 @@ void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data, bool is_n
 
     if ( ! send_->GetSendData().empty() )
         send_->StartSend(boost::system::error_code());
-
-    SetState(kNormal);
 }
 
 void SerialServer::LogData(std::string operation, const ByteArray& data)
