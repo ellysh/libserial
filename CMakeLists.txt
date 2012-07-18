@@ -10,9 +10,6 @@ cmake_minimum_required(VERSION 2.6)
 project(libserial)
 
 if(UNIX)
-  find_package(PkgConfig)
-  pkg_check_modules(LIBMYSQL_STATE REQUIRED libmysql-state)
-
   find_package( Boost 1.40 COMPONENTS system program_options REQUIRED )
   include_directories( ${Boost_INCLUDE_DIR} )
 endif(UNIX)
