@@ -2,7 +2,6 @@
 
 #include <string>
 #include <boost/bind.hpp>
-#include <types_mysql_state.h>
 
 #include "serial_send.h"
 #include "serial_receive.h"
@@ -10,7 +9,6 @@
 
 using namespace std;
 using namespace serial;
-using namespace mysql_state;
 
 SerialServer::SerialServer(boost::asio::io_service& io_service, string log_file, string name) :
                            DebugClient(log_file), port_(io_service),
