@@ -19,7 +19,7 @@ public:
     void SendData(const ByteArray& send_data);
     void StartSend(const boost::system::error_code& error);
     void TrySend();
-    void SetDelay(int delay);
+    void SetDelay(const int delay);
 
     ByteArray& GetSendData();
 

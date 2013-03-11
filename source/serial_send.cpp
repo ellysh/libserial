@@ -46,13 +46,12 @@ void SerialSend::HandleSend(const boost::system::error_code& error)
     send_data_.clear();
 }
 
-/* FIXME: Return the const value */
 ByteArray& SerialSend::GetSendData()
 {
     return send_data_;
 }
 
-void SerialSend::SetDelay(int delay)
+void SerialSend::SetDelay(const int delay)
 {
     delay_ = delay;
 }

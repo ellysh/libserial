@@ -22,7 +22,7 @@ private:
     SerialServer& server_;
 
     void ReceiveData();
-    void HandleReceive(const boost::system::error_code& error, size_t bytes_transferred);
+    void HandleReceive(const boost::system::error_code& error, const size_t bytes_transferred);
 };
 
 }

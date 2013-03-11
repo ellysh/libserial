@@ -30,12 +30,12 @@ void SerialReceive::StartReceive()
                             &server_, boost::asio::placeholders::error, "receive"));
 }
 
-static void DecreaseForProcessing(ByteArray& message, size_t size)
+static void DecreaseForProcessing(ByteArray& message, const size_t size)
 {
     message.resize(size);
 }
 
-void SerialReceive::HandleReceive(const boost::system::error_code& error, size_t bytes_transferred)
+void SerialReceive::HandleReceive(const boost::system::error_code& error, const size_t bytes_transferred)
 {
     server_.GetDebug().Log() << "\treceived " << bytes_transferred << ", error=" << error << endl;
 
