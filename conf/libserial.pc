@@ -5,8 +5,8 @@ includedir=${prefix}/include/libserial
 modules=1
 
 Name: libserial
-Version: 1.0
-Description: The library for work with the serial port
+Version: 1.2
+Description: The library for working with the serial port
 Requires:
 Libs: -L${libdir}
 Libs.private:
