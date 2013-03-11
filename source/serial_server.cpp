@@ -9,7 +9,7 @@
 using namespace std;
 using namespace serial;
 
-SerialServer::SerialServer(boost::asio::io_service& io_service, string log_file, string name) :
+SerialServer::SerialServer(boost::asio::io_service& io_service, string log_file) :
                            debug_(log_file), port_(io_service),
                            cycle_timer_(io_service)
 {
@@ -32,7 +32,7 @@ SerialServer::~SerialServer()
     delete send_;
 }
 
-void SerialServer::StartServerAndReceive(string device, int baud_rate)
+void SerialServer::StartServerAndReceive(const string device, const int baud_rate)
 {
     try
     {
@@ -76,7 +76,7 @@ void SerialServer::HandleTimeout(const boost::system::error_code& error, const c
                             boost::asio::placeholders::error, action));
 }
 
-void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data, bool is_new_send)
+void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data, const bool is_new_send)
 {
     if ( is_new_send )
         send_->GetSendData().clear();
@@ -88,18 +88,18 @@ void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data, bool is_n
         send_->StartSend(boost::system::error_code());
 }
 
-void SerialServer::LogData(std::string operation, const ByteArray& data)
+void SerialServer::LogData(const std::string operation, const ByteArray& data)
 {
     debug_.Log() << operation;
     debug_.LogByteArray(debug_.Log(), data);
 }
 
-void SerialServer::SetDelay(int delay)
+void SerialServer::SetDelay(const int delay)
 {
     send_->SetDelay(delay);
 }
 
-void SerialServer::SetCycle(int cycle)
+void SerialServer::SetCycle(const int cycle)
 {
     cycle_ = cycle;
 }
@@ -109,12 +109,12 @@ void SerialServer::SendData(const ByteArray& send_data)
     send_->SendData(send_data);
 }
 
-void SerialServer::SetReceiveHandler(ReceiveHandler receive_handler)
+void SerialServer::SetReceiveHandler(const ReceiveHandler receive_handler)
 {
     receive_handler_ = receive_handler;
 }
 
-int SerialServer::GetCycle()
+int SerialServer::GetCycle() const
 {
     return cycle_;
 }
