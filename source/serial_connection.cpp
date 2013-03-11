@@ -43,7 +43,7 @@ void SerialConnection::Connect()
     }
 }
 
-void SerialConnection::SendRequest(ByteArray request)
+void SerialConnection::SendRequest(const ByteArray request)
 {
     Connect();
 
@@ -65,13 +65,13 @@ void SerialConnection::SendRequest(ByteArray request)
     }
 }
 
-static void IncreaseForReceiving(ByteArray& message, size_t size)
+static void IncreaseForReceiving(ByteArray& message, const size_t size)
 {
     message.reserve(size);
     message.resize(size);
 }
 
-ByteArray SerialConnection::ReceiveAnswer(size_t size)
+ByteArray SerialConnection::ReceiveAnswer(const size_t size)
 {
     Connect();
 
@@ -99,7 +99,7 @@ ByteArray SerialConnection::ReceiveAnswer(size_t size)
     return answer;
 }
 
-bool SerialConnection::IsConnected()
+bool SerialConnection::IsConnected() const
 {
     return is_connected_;
 }

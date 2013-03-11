@@ -18,7 +18,6 @@ install(TARGETS serial DESTINATION lib/${PROJECT_NAME})
 
 install(FILES
             debug.h
-            debug_client.h
             types_serial.h
             serial_connection.h
             serial_server.h
