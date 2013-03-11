@@ -37,7 +37,7 @@ static void DecreaseForProcessing(ByteArray& message, size_t size)
 
 void SerialReceive::HandleReceive(const boost::system::error_code& error, size_t bytes_transferred)
 {
-    server_.debug_->Log() << "\treceived " << bytes_transferred << ", error=" << error << endl;
+    server_.GetDebug().Log() << "\treceived " << bytes_transferred << ", error=" << error << endl;
 
     if ( error && error != boost::asio::error::message_size )
         return;

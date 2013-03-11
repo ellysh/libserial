@@ -4,8 +4,6 @@
 #include <string>
 #include <boost/bind.hpp>
 
-#include "debug.h"
-
 using namespace std;
 using namespace serial;
 
@@ -40,7 +38,7 @@ void SerialConnection::Connect()
         }
         catch (exception& ex)
         {
-            debug_->Log() << "SerialConnection - error = " << ex.what() << endl;
+            debug_.Log() << "SerialConnection - error = " << ex.what() << endl;
         }
     }
 }
@@ -53,8 +51,8 @@ void SerialConnection::SendRequest(ByteArray request)
         return;
 
 #ifdef __DEBUG__
-    debug_->Log() << "SerialConnection::SendRequest()" << endl;
-    debug_->LogByteArray(debug_->Log(), request);
+    debug_.Log() << "SerialConnection::SendRequest()" << endl;
+    debug_.LogByteArray(debug_.Log(), request);
 #endif
 
     try
@@ -94,8 +92,8 @@ ByteArray SerialConnection::ReceiveAnswer(size_t size)
     }
 
 #ifdef __DEBUG__
-    debug_->Log() << "SerialConnection::ReceiveAnswer() - ";
-    debug_->LogByteArray(debug_->Log(), answer);
+    debug_.Log() << "SerialConnection::ReceiveAnswer() - ";
+    debug_.LogByteArray(debug_.Log(), answer);
 #endif
 
     return answer;

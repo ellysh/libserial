@@ -35,14 +35,14 @@ void SerialSend::StartSend(const boost::system::error_code& error)
 
 void SerialSend::TrySend()
 {
-    server_.debug_->Log() << "try_send" << endl;
+    server_.GetDebug().Log() << "try_send" << endl;
     ByteArray empty_data;
     server_.HandleReceiveAndSend(empty_data, false);
 }
 
 void SerialSend::HandleSend(const boost::system::error_code& error)
 {
-    server_.debug_->Log() << "\tsend error = " << error.message() << endl;
+    server_.GetDebug().Log() << "\tsend error = " << error.message() << endl;
     send_data_.clear();
 }
 

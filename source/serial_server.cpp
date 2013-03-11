@@ -5,13 +5,12 @@
 
 #include "serial_send.h"
 #include "serial_receive.h"
-#include "debug.h"
 
 using namespace std;
 using namespace serial;
 
 SerialServer::SerialServer(boost::asio::io_service& io_service, string log_file, string name) :
-                           DebugClient(log_file), port_(io_service),
+                           debug_(log_file), port_(io_service),
                            cycle_timer_(io_service)
 {
     send_ = new SerialSend(io_service, *this);
@@ -54,12 +53,12 @@ void SerialServer::StartServerAndReceive(string device, int baud_rate)
 
         port_.set_option(boost::asio::serial_port_base::character_size(8));
 
-        debug_->Log() << "serialPort(" << device << "): open error = " << error << endl;
+        debug_.Log() << "serialPort(" << device << "): open error = " << error << endl;
         receive_->StartReceive();
     }
     catch( exception & ex )
     {
-        debug_->Log() << "serialPort(" << device << "): exception = " << ex.what() << endl;
+        debug_.Log() << "serialPort(" << device << "): exception = " << ex.what() << endl;
     }
 }
 
@@ -91,8 +90,8 @@ void SerialServer::HandleReceiveAndSend(const ByteArray& receive_data, bool is_n
 
 void SerialServer::LogData(std::string operation, const ByteArray& data)
 {
-    debug_->Log() << operation;
-    debug_->LogByteArray(debug_->Log(), data);
+    debug_.Log() << operation;
+    debug_.LogByteArray(debug_.Log(), data);
 }
 
 void SerialServer::SetDelay(int delay)
@@ -130,7 +129,7 @@ boost::asio::serial_port& SerialServer::GetPort()
     return port_;
 }
 
-Debug* SerialServer::GetDebug()
+Debug& SerialServer::GetDebug()
 {
     return debug_;
 }

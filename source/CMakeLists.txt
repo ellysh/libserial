@@ -3,7 +3,6 @@ link_directories(${COMMON_LIBDIR})
 
 set(serial_LIB_SRCS
     debug.cpp
-    debug_client.cpp
     serial_connection.cpp
     serial_receive.cpp
     serial_server.cpp

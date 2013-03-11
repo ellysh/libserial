@@ -6,7 +6,7 @@
 #include <boost/function.hpp>
 
 #include "types_serial.h"
-#include "debug_client.h"
+#include "debug.h"
 
 namespace serial
 {
@@ -14,7 +14,7 @@ namespace serial
 class SerialSend;
 class SerialReceive;
 
-class SerialServer : protected DebugClient
+class SerialServer
 {
 public:
     typedef boost::function<void (const ByteArray&)> ReceiveHandler;
@@ -32,6 +32,7 @@ public:
     void SetReceiveHandler(ReceiveHandler receive_handler);
 
 private:
+    Debug debug_;
     ReceiveHandler receive_handler_;
     boost::asio::serial_port port_;
     boost::asio::deadline_timer cycle_timer_;
@@ -42,7 +43,8 @@ private:
     int GetCycle();
     boost::asio::deadline_timer& GetCycleTimer();
     boost::asio::serial_port& GetPort();
-    Debug* GetDebug();
+    Debug& GetDebug();
+
     void LogData(std::string operation, const ByteArray& data);
 
     void HandleReceiveAndSend(const ByteArray& receive_data, bool is_new_send);

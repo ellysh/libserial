@@ -6,16 +6,16 @@
 #include <boost/function.hpp>
 
 #include "types_serial.h"
-#include "debug_client.h"
+#include "debug.h"
 
 namespace serial
 {
 
-class SerialConnection : protected DebugClient
+class SerialConnection
 {
 public:
     SerialConnection(std::string device, int baud_rate, std::string log_file = "") :
-        DebugClient(log_file), port_(io_service_), device_(device),
+        port_(io_service_), debug_(log_file), device_(device),
         baud_rate_(baud_rate), is_connected_(false) {}
 
     void SendRequest(ByteArray request);
@@ -26,6 +26,7 @@ private:
     boost::asio::io_service io_service_;
     boost::asio::serial_port port_;
 
+    Debug debug_;
     std::string device_;
     int baud_rate_;
     bool is_connected_;
