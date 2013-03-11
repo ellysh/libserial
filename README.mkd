@@ -1,0 +1,48 @@
+Libserial 1.2 version
+=====================
+
+INTRODUCTION
+------------
+
+Libserial is a open source library with implementation of the synchronous and asynchronous serial port connections.
+
+Libserial provides a simple wrappers for boost:asio classes of the serial port family.
+
+
+BUILDING
+--------
+
+You need the CMake build system and C++ compiler to build this software.
+
+1. Generate makefiles with CMake build system.<br/>
+Type one of these commands to build debug or release versions of the zero-cache:
+
+    $ cmake -D CMAKE_BUILD_TYPE=Debug CMakeLists.txt
+
+    $ cmake -D CMAKE_BUILD_TYPE=Release CMakeLists.txt
+
+2. Build binaries with C++ compiler:
+
+    $ make
+
+3. Build debian package if you use Debian-based Linux distribution:
+
+    $ make deb
+
+You can find debian packages in the `bin/deb` directory.
+
+INSTALLING
+----------
+
+Debian-based Linux distribution users can install debian packages from
+`bin/deb` directory.
+
+Another way is installing with Makefile default mechanism:
+
+    $ make install
+
+COPYING
+-------
+
+Free use of this software is granted under the terms of the GNU Lesser General
+Public License (LGPL). For details see the file `LICENSE` included with the zero-cache distribution.
