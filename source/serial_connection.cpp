@@ -79,17 +79,20 @@ ByteArray SerialConnection::ReceiveAnswer(const size_t size)
         return ByteArray();
 
     ByteArray answer;
+    size_t bytes_transferred;
 
     try
     {
         IncreaseForReceiving(answer, size);
-        port_.read_some(boost::asio::buffer(answer, size));
+        bytes_transferred = port_.read_some(boost::asio::buffer(answer, size));
     }
     catch ( boost::system::system_error error )
     {
         is_connected_ = false;
         return ByteArray();
     }
+
+    answer.resize(bytes_transferred);
 
 #ifdef __DEBUG__
     debug_.Log() << "SerialConnection::ReceiveAnswer() - ";
