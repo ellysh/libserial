@@ -1,4 +1,4 @@
-Libserial 1.2 version
+Libserial 1.3 version
 =====================
 
 INTRODUCTION
