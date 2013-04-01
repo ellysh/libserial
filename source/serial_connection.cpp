@@ -43,7 +43,7 @@ void SerialConnection::Connect()
     }
 }
 
-void SerialConnection::SendRequest(const ByteArray request)
+void SerialConnection::SendData(const ByteArray request)
 {
     Connect();
 
@@ -71,7 +71,7 @@ static void IncreaseForReceiving(ByteArray& message, const size_t size)
     message.resize(size);
 }
 
-ByteArray SerialConnection::ReceiveAnswer(const size_t size)
+ByteArray SerialConnection::ReceiveData(const size_t size)
 {
     Connect();
 

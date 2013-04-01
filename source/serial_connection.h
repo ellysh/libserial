@@ -18,8 +18,8 @@ public:
         port_(io_service_), debug_(log_file), device_(device),
         baud_rate_(baud_rate), is_connected_(false) {}
 
-    void SendRequest(const ByteArray request);
-    ByteArray ReceiveAnswer(const size_t size);
+    void SendData(const ByteArray request);
+    ByteArray ReceiveData(const size_t size);
     bool IsConnected() const;
 
 private:
