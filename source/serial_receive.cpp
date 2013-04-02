@@ -3,7 +3,7 @@
 #include <boost/bind.hpp>
 
 #include "serial_server.h"
-#include "debug.h"
+#include "debug_serial.h"
 
 using namespace std;
 using namespace serial;

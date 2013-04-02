@@ -2,7 +2,7 @@ include_directories(${COMMON_INCLUDE_DIRS})
 link_directories(${COMMON_LIBDIR})
 
 set(serial_LIB_SRCS
-    debug.cpp
+    debug_serial.cpp
     serial_connection.cpp
     serial_receive.cpp
     serial_server.cpp
@@ -17,7 +17,7 @@ endif(UNIX)
 install(TARGETS serial DESTINATION lib/${PROJECT_NAME})
 
 install(FILES
-            debug.h
+            debug_serial.h
             types_serial.h
             serial_connection.h
             serial_server.h

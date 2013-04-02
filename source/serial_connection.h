@@ -5,8 +5,8 @@
 #include <boost/asio.hpp>
 #include <boost/function.hpp>
 
-#include "types_serial.h"
-#include "debug.h"
+#include <types_serial.h>
+#include <debug_serial.h>
 
 namespace serial
 {

@@ -1,9 +1,9 @@
-#ifndef DEBUG_H
-#define DEBUG_H
+#ifndef DEBUG_SERIAL_H
+#define DEBUG_SERIAL_H
 
 #include <fstream>
 
-#include "types_serial.h"
+#include <types_serial.h>
 
 namespace serial
 {
