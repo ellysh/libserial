@@ -16,7 +16,7 @@ class SerialConnection
 public:
     SerialConnection(const std::string device, const int baud_rate, const std::string log_file = "");
 
-    void SendData(const ByteArray request);
+    void SendData(const ByteArray& data);
     ByteArray ReceiveData(const size_t size);
 
 private:

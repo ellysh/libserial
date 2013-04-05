@@ -50,16 +50,16 @@ void SerialConnection::Connect(const string device, const int baud_rate)
     }
 }
 
-void SerialConnection::SendData(const ByteArray request)
+void SerialConnection::SendData(const ByteArray& data)
 {
 #ifdef __DEBUG__
-    debug_.Log() << "SerialConnection::SendRequest()" << endl;
-    debug_.LogByteArray(debug_.Log(), request);
+    debug_.Log() << "SerialConnection::SendData()" << endl;
+    debug_.LogByteArray(debug_.Log(), data);
 #endif
 
     try
     {
-        boost::asio::write(port_, boost::asio::buffer(request));
+        boost::asio::write(port_, boost::asio::buffer(data));
     }
     catch ( boost::system::system_error error )
     {
