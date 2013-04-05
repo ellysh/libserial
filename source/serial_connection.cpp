@@ -7,49 +7,51 @@
 using namespace std;
 using namespace serial;
 
-void SerialConnection::Connect()
+SerialConnection::SerialConnection(const string device, const int baud_rate, const string log_file) :
+    port_(io_service_), debug_(log_file)
 {
-    if ( ! is_connected_ )
+    Connect(device, baud_rate);
+}
+
+void SerialConnection::Connect(const string device, const int baud_rate)
+{
+    try
     {
-        try
+        if ( port_.is_open() )
+            port_.close();
+
+        boost::system::error_code error;
+
+        port_.open(device, error);
+
+        port_.set_option(boost::asio::serial_port_base::baud_rate(baud_rate));
+
+        port_.set_option(boost::asio::serial_port_base::flow_control(
+                    boost::asio::serial_port_base::flow_control::none));
+
+        port_.set_option(boost::asio::serial_port_base::parity(
+                    boost::asio::serial_port_base::parity::none));
+
+        port_.set_option(boost::asio::serial_port_base::stop_bits(
+                    boost::asio::serial_port_base::stop_bits::one));
+
+        port_.set_option(boost::asio::serial_port_base::character_size(8));
+
+        if ( error != 0 )
         {
-            if ( port_.is_open() )
-                port_.close();
-
-            boost::system::error_code error;
-
-            port_.open(device_, error);
-
-            port_.set_option(boost::asio::serial_port_base::baud_rate(baud_rate_));
-
-            port_.set_option(boost::asio::serial_port_base::flow_control(
-                             boost::asio::serial_port_base::flow_control::none));
-
-            port_.set_option(boost::asio::serial_port_base::parity(
-                             boost::asio::serial_port_base::parity::none));
-
-            port_.set_option(boost::asio::serial_port_base::stop_bits(
-                             boost::asio::serial_port_base::stop_bits::one));
-
-            port_.set_option(boost::asio::serial_port_base::character_size(8));
-
-            if ( error == 0 )
-                is_connected_ = true;
+            debug_.Log() << "SerialConnection - error = " << error << endl;
+            exit(1);
         }
-        catch (exception& ex)
-        {
-            debug_.Log() << "SerialConnection - error = " << ex.what() << endl;
-        }
+    }
+    catch (exception& ex)
+    {
+        debug_.Log() << "SerialConnection - error = " << ex.what() << endl;
+        exit(1);
     }
 }
 
 void SerialConnection::SendData(const ByteArray request)
 {
-    Connect();
-
-    if ( ! is_connected_ )
-        return;
-
 #ifdef __DEBUG__
     debug_.Log() << "SerialConnection::SendRequest()" << endl;
     debug_.LogByteArray(debug_.Log(), request);
@@ -73,11 +75,6 @@ static void IncreaseForReceiving(ByteArray& message, const size_t size)
 
 ByteArray SerialConnection::ReceiveData(const size_t size)
 {
-    Connect();
-
-    if ( ! is_connected_ )
-        return ByteArray();
-
     ByteArray answer;
     size_t bytes_transferred;
 
@@ -88,8 +85,8 @@ ByteArray SerialConnection::ReceiveData(const size_t size)
     }
     catch ( boost::system::system_error error )
     {
-        is_connected_ = false;
-        return ByteArray();
+        debug_.Log() << "SerialConnection - error = " << error.what() << endl;
+        exit(1);
     }
 
     answer.resize(bytes_transferred);
@@ -100,9 +97,4 @@ ByteArray SerialConnection::ReceiveData(const size_t size)
 #endif
 
     return answer;
-}
-
-bool SerialConnection::IsConnected() const
-{
-    return is_connected_;
 }

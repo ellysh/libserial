@@ -14,24 +14,17 @@ namespace serial
 class SerialConnection
 {
 public:
-    SerialConnection(const std::string device, const int baud_rate, const std::string log_file = "") :
-        port_(io_service_), debug_(log_file), device_(device),
-        baud_rate_(baud_rate), is_connected_(false) {}
+    SerialConnection(const std::string device, const int baud_rate, const std::string log_file = "");
 
     void SendData(const ByteArray request);
     ByteArray ReceiveData(const size_t size);
-    bool IsConnected() const;
 
 private:
     boost::asio::io_service io_service_;
     boost::asio::serial_port port_;
-
     Debug debug_;
-    std::string device_;
-    int baud_rate_;
-    bool is_connected_;
 
-    void Connect();
+    void Connect(const std::string device, const int baud_rate);
 };
 
 }
