@@ -63,7 +63,7 @@ void SerialConnection::SendData(const ByteArray request)
     }
     catch ( boost::system::system_error error )
     {
-        cerr << error.code() << endl;
+        debug_.Log() << "SerialConnection - error = " << error.code() << endl;
     }
 }
 
